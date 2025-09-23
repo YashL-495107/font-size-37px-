@@ -1,0 +1,26 @@
+import joblib
+import pandas as pd
+
+# Load the trained model from your GitHub repo
+model = joblib.load("kepler_model.pkl")
+def predict_exoplanet(features_dict):
+    """
+    Example of features_dict:
+    {
+        "koi_period": 365.2,
+        "koi_prad": 1.1,
+        "koi_teq": 300,
+        "koi_insol": 1.0,
+        "koi_depth": 0.01,
+        "koi_duration": 10
+    }
+    """
+    import pandas as pd
+    df = pd.DataFrame([features_dict])
+    prediction = model.predict(df)
+    return prediction[0]  # CONFIRMED / CANDIDATE / FALSE POSITIVE
+def predict_csv(file):
+    import pandas as pd
+    df = pd.read_csv(file)
+    df["prediction"] = model.predict(df)
+    return df.to_dict(orient="records")  # returns predictions as JSON
